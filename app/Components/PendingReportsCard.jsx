@@ -1,4 +1,3 @@
-// This file is: app/Components/PendingReportsCard.jsx
 import React from 'react';
 
 export default function PendingReportsCard({ reports = [] }) {

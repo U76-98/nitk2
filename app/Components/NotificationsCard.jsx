@@ -1,4 +1,3 @@
-// This file is: app/Components/NotificationsCard.jsx
 import React from 'react';
 import { FaBell } from 'react-icons/fa';
 

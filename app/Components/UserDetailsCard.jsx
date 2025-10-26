@@ -1,11 +1,9 @@
-// This file is: app/Components/UserDetailsCard.jsx
-"use client"; 
-import React from 'react'; // 1. Remove useState and useEffect
 
-// 2. Accept new props: name, setName, email, setEmail
+"use client"; 
+import React from 'react';
+
 export default function UserDetailsCard({ user = {}, name, setName, email, setEmail, onNextStep }) {
   
-  // 3. REMOVE the local useState and useEffect
   
   const { address = {} } = user;
 
@@ -23,7 +21,6 @@ export default function UserDetailsCard({ user = {}, name, setName, email, setEm
             <label className="block text-sm font-medium text-gray-800">Name</label>
             <input
               type="text"
-              // 4. Use the props directly
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full mt-1 px-3 py-2 border border-gray-500 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-600"
@@ -34,7 +31,6 @@ export default function UserDetailsCard({ user = {}, name, setName, email, setEm
             <label className="block text-sm font-medium text-gray-800">Email</label>
             <input
               type="email"
-              // 5. Use the props directly
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full mt-1 px-3 py-2 border border-gray-500 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-600"
@@ -44,7 +40,6 @@ export default function UserDetailsCard({ user = {}, name, setName, email, setEm
         </div>
       </div>
       
-      {/* (Shipping Address section stays the same) */}
       <div>
         <h4 className="font-medium text-gray-800 mb-2">Shipping Address</h4>
         <div className="border rounded-xl p-4 text-gray-700 bg-gray-50">

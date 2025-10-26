@@ -1,7 +1,5 @@
-// This file is: app/Components/OrderSummaryCard.jsx
 import React from 'react';
 
-// isFinalStep is a new prop
 export default function OrderSummaryCard({ product, totalCost, balanceAfter, isFinalStep }) {
   return (
     <div className="bg-white p-6 rounded-2xl shadow-sm sticky top-28">
@@ -30,15 +28,12 @@ export default function OrderSummaryCard({ product, totalCost, balanceAfter, isF
         <span className="text-lg font-bold text-green-700">{totalCost} Coins</span>
       </div>
       
-      {/* We only show the final balance on the last step */}
       {isFinalStep && (
         <div className="text-sm text-gray-600 mb-5">
           Your new balance will be: 
           <span className="font-bold text-gray-800"> {balanceAfter} Coins</span>
         </div>
       )}
-      
-      {/* The "Confirm" button is now removed from this component */}
       
     </div>
   );

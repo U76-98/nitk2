@@ -1,20 +1,17 @@
-// This file is: app/checkout/page.jsx
 "use client"; 
 
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation'; 
 
 import AppNavbar from '../Components/AppNavbar';
-import UserDetailsCard from '../Components/UserDetailsCard'; // Renamed
+import UserDetailsCard from '../Components/UserDetailsCard';
 import OrderSummaryCard from '../Components/OrderSummaryCard';
 import ReviewOrderCard from '../Components/ReviewOrderCard';
 
-// --- (Mock data and fetch functions) ---
 const allProducts = [
   { id: 1, name: 'Recycled Paper Notebook', price: 25 },
-  // ...
 ];
-const fetchProductData = async (id) => { /* ... */ };
+const fetchProductData = async (id) => {};
 const fetchUserData = async () => {
   return {
     name: 'Jane Citizen',
@@ -28,8 +25,6 @@ const fetchUserData = async () => {
     }
   };
 };
-// --- END MOCK DATA ---
-
 
 export default function CheckoutPage() {
   
@@ -37,8 +32,6 @@ export default function CheckoutPage() {
   const [user, setUser] = useState({});
   const [product, setProduct] = useState({});
   
-  // --- 1. LIFTED STATE ---
-  // The state for name and email now lives here, in the parent
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   
@@ -55,7 +48,6 @@ export default function CheckoutPage() {
         setUser(userData);
         setProduct(productData);
         
-        // 2. Set the lifted state when data loads
         setName(userData.name);
         setEmail(userData.email);
       }
@@ -63,7 +55,6 @@ export default function CheckoutPage() {
     loadData();
   }, [productId]);
 
-  // (Calculations stay the same)
   const totalCost = (product?.price || 0);
   const balanceAfter = (user?.ecoCoins || 0) - totalCost;
 
@@ -73,7 +64,6 @@ export default function CheckoutPage() {
 
       <main className="container mx-auto px-6 py-8">
         
-        {/* (Stepper code stays the same) */}
         <div className="text-xl font-semibold text-gray-800 mb-4">
           Checkout
         </div>
@@ -88,13 +78,11 @@ export default function CheckoutPage() {
 
         <div className="flex flex-col lg:flex-row gap-8">
 
-          {/* --- LEFT COLUMN --- */}
           <div className="w-full lg:w-2/3 space-y-6">
             
             {step === 1 && (
               <UserDetailsCard 
-                user={user} // Pass user for address
-                // 3. Pass the state and setters down
+                user={user}
                 name={name}
                 setName={setName}
                 email={email}
@@ -105,8 +93,7 @@ export default function CheckoutPage() {
 
             {step === 2 && (
               <ReviewOrderCard
-                user={user} // Pass user for address
-                // 4. Pass the UPDATED name and email
+                user={user}
                 name={name}
                 email={email}
                 totalCost={totalCost}
@@ -116,7 +103,6 @@ export default function CheckoutPage() {
 
           </div>
 
-          {/* --- RIGHT COLUMN --- */}
           <div className="w-full lg:w-1/3">
             <OrderSummaryCard 
               product={product} 

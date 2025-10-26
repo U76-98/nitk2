@@ -1,28 +1,32 @@
-"use client"; // Required to use the router hook
+"use client"; 
 
 import React from 'react';
-import { useRouter } from 'next/navigation'; // Import the App Router's router
-import RoleSelectionPage from './Components/RoleSelectionPage';
-// No need to import LoginPage here anymore
+import { useRouter } from 'next/navigation'; 
+import RoleSelectionPage from './Components/RoleSelectionPage'; 
 
 export default function Page() {
-  const router = useRouter(); // Initialize the router
-  
-  // We no longer need the 'view' or 'selectedRole' state here
+  const router = useRouter(); 
 
-  // This function will now navigate to the /login page
-  const handleRoleSelect = (role) => {
-    // We pass the role as a query parameter in the URL
-    // This will send the user to: /login?role=Citizen (for example)
-    router.push(`/login?role=${role}`);
-  };
+  const handleRoleSelect = (role) => {
+    
+    if (role === 'Green Champion') {
+      router.push('/login/green-champion');
 
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 font-inter">
-      {/* This page is now ONLY responsible for role selection.
-        The login component will be on its own separate page.
-      */}
-      <RoleSelectionPage onSelectRole={handleRoleSelect} />
-    </div>
-  );
+    } else if (role === 'Processing Plant') { 
+      router.push('/login/processing-plant'); 
+
+    } else if (role === 'Citizen') {
+      router.push('/login');
+
+    } else {
+      router.push(`/login?role=${encodeURIComponent(role)}`);
+    }
+    
+  };
+
+  return (
+    <div className="min-h-screen bg-green-50 font-inter flex items-center justify-center">
+      <RoleSelectionPage onSelectRole={handleRoleSelect} />
+    </div>
+  );
 }

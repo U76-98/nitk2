@@ -1,7 +1,5 @@
-// This file is: app/Components/ChampionOrdersCard.jsx
 import React from 'react';
 import { FaBoxOpen } from 'react-icons/fa';
-// import Link from 'next/link';
 
 export default function ChampionOrdersCard({ orders = [] }) {
   return (
@@ -10,9 +8,7 @@ export default function ChampionOrdersCard({ orders = [] }) {
         <h3 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
           <FaBoxOpen /> Marketplace Orders
         </h3>
-        {/* <Link href="/all-orders"> */}
           <button className="text-sm text-blue-600 hover:underline">View All</button>
-        {/* </Link> */}
       </div>
       <ul className="space-y-3">
         {orders.map(o => (

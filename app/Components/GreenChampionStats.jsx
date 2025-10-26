@@ -1,4 +1,3 @@
-// This file is: app/Components/GreenChampionStats.jsx
 import React from 'react';
 import { 
   FaUsers, FaHandsHelping, FaTrash, FaCalendarAlt, FaCheckCircle 

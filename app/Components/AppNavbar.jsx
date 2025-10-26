@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { FaCoins } from 'react-icons/fa'; // Make sure you have react-icons
+import { FaCoins } from 'react-icons/fa';
 
 export default function AppNavbar({ ecoCoins }) {
   return (
@@ -13,10 +13,6 @@ export default function AppNavbar({ ecoCoins }) {
           </h1>
         </Link>
         
-        {/* This check prevents any crashes.
-          If ecoCoins is 'undefined' (during the first render), 
-          this entire <div> is skipped.
-        */}
         {ecoCoins !== undefined && (
           <div className="flex items-center space-x-2">
             <FaCoins className="text-yellow-600 text-xl" />

@@ -1,20 +1,16 @@
-// This file is: app/Components/RequestGarbageCard.jsx
-"use client"; // This is now a Client Component
+"use client"; 
 
 import React, { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 
 export default function RequestGarbageCard() {
-  // State for the form lives inside this component
   const [tonsRequested, setTonsRequested] = useState('');
 
-  // Handle the form submission
   const handleRequestSubmit = (e) => {
     e.preventDefault();
     if (tonsRequested > 0) {
       alert(`Request for ${tonsRequested} tons of garbage has been sent!`);
-      // In a real app, you'd send this to the backend
-      setTonsRequested(''); // Clear the input
+      setTonsRequested('');
     }
   };
 

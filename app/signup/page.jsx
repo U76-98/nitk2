@@ -1,11 +1,11 @@
-// This file is: app/signup/page.jsx
+
 "use client";
 
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import AppNavbar from '../Components/AppNavbar';
-import { supabase } from '../../utils/supabaseClient'; // Adjust path if needed
+import { supabase } from '../../utils/supabaseClient';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function SignupPage() {
     name: '',
     email: '',
     phone: '',
-    address: '', // Single field for address
+    address: '',
     password: '',
   });
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,6 @@ export default function SignupPage() {
     setError(null);
 
     try {
-      // Step A: Sign up user with Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -42,7 +41,6 @@ export default function SignupPage() {
       if (authError) throw authError;
       if (!authData?.user) throw new Error('Signup completed but no user data received.');
 
-      // Step B: Insert profile data into 'profiles' table
       const { error: profileError } = await supabase
         .from('profiles')
         .insert({
@@ -50,7 +48,7 @@ export default function SignupPage() {
           full_name: formData.name,
           email: formData.email,
           phone: formData.phone,
-          address: formData.address, // Send the single address string
+          address: formData.address,
         });
 
       if (profileError) {
@@ -88,7 +86,6 @@ export default function SignupPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
 
-            {/* --- Personal Details --- */}
             <div>
               <label className="block text-sm font-medium text-gray-800 mb-1">Full Name</label>
               <input
@@ -126,7 +123,6 @@ export default function SignupPage() {
               />
             </div>
 
-            {/* --- Address --- */}
             <hr className="my-6 border-gray-200" />
             <h3 className="text-lg font-semibold text-gray-700">Address</h3>
             <div>
@@ -143,7 +139,6 @@ export default function SignupPage() {
               />
             </div>
 
-            {/* --- Password --- */}
             <hr className="my-6 border-gray-200" />
             <div>
               <label className="block text-sm font-medium text-gray-800 mb-1">Password</label>
@@ -160,7 +155,6 @@ export default function SignupPage() {
               <p className="text-xs text-gray-500 mt-1">Minimum 6 characters</p>
             </div>
 
-            {/* --- Submit Button --- */}
             <button
               type="submit"
               className={`w-full mt-6 py-3 px-4 bg-green-700 text-white font-medium rounded-full hover:bg-green-800 transition duration-200 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
@@ -169,7 +163,6 @@ export default function SignupPage() {
               {loading ? 'Signing Up...' : 'Sign Up'}
             </button>
 
-            {/* --- Link to Login --- */}
             <p className="text-center text-sm text-gray-600 pt-4">
               Already have an account?{' '}
               <Link href="/login" className="font-medium text-green-700 hover:underline">

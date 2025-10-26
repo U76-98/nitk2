@@ -1,27 +1,24 @@
-// This file is: app/Components/LoginPage.jsx
-"use client"; // Needs state and handlers
+"use client";
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-// Import the Supabase client
-import { supabase } from '../../utils/supabaseClient'; // Adjust path if needed
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/app/lib/supabase/client";
 
-// (You can keep or remove the ROLE_CONFIG if you still want the title to change based on the role prop)
 const ROLE_CONFIG = {
-  Citizen: { title: 'Citizen Login' },
-  'Green Champions': { title: 'Green Champion Login' },
-  'Processing Plants': { title: 'Processing Plant Login' },
-  default: { title: 'Login' }
+  Citizen: { title: "Citizen Login" },
+  "Green Champions": { title: "Green Champion Login" },
+  "Processing Plants": { title: "Processing Plant Login" },
+  default: { title: "Login" },
 };
 
-export default function LoginPage({ role }) { // It still receives the role prop for the title
+export default function LoginPage({ role }) {
+  const supabase = createClient();
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Get the display title based on the role prop
   const config = ROLE_CONFIG[role] || ROLE_CONFIG.default;
 
   const handleLogin = async (e) => {
@@ -30,30 +27,22 @@ export default function LoginPage({ role }) { // It still receives the role prop
     setError(null);
 
     try {
-      // Attempt to sign in using Supabase Auth
       const { data, error: signInError } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
+        email,
+        password,
       });
 
-      if (signInError) {
-        throw signInError; // Throw error to be caught below
-      }
+      if (signInError) throw signInError;
 
-      // Login successful!
-      // Supabase automatically handles session/cookies
-      console.log('Login successful:', data);
-
-      // Redirect to the citizen dashboard
-      router.push('/citizen-dashboard');
-
+      console.log("Login successful:", data);
+      router.push("/citizen-dashboard");
+      router.refresh();
     } catch (error) {
-      console.error('Login Error:', error);
-      // Provide a user-friendly error message
-      if (error.message.includes('Invalid login credentials')) {
-        setError('Incorrect email or password. Please try again.');
+      console.error("Login Error:", error);
+      if (error.message.includes("Invalid login credentials")) {
+        setError("Incorrect email or password. Please try again.");
       } else {
-        setError(error.message || 'An unexpected error occurred during login.');
+        setError(error.message || "An unexpected error occurred during login.");
       }
     } finally {
       setLoading(false);
@@ -61,52 +50,76 @@ export default function LoginPage({ role }) { // It still receives the role prop
   };
 
   return (
-    <div className="bg-white p-8 rounded-2xl shadow-sm w-full max-w-md"> {/* Adjusted width */}
-      {/* Title changes based on role, but logic is only for citizens */}
-      <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-        {config.title}
-      </h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-green-100 px-4">
+      <div className="w-full max-w-md bg-white/70 backdrop-blur-xl border border-green-100 rounded-3xl shadow-lg p-8 animate-fade-in">
+        
+        <h1 className="text-center text-4xl font-extrabold text-green-700 mb-2 tracking-tight">
+          EcoConnect
+        </h1>
+        <h2 className="text-center text-lg text-gray-700 font-medium mb-8">
+          {config.title}
+        </h2>
 
-      {/* Display login errors */}
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-4" role="alert">
-          <strong className="font-bold">Error: </strong>
-          <span className="block sm:inline">{error}</span>
-        </div>
-      )}
+        {error && (
+          <div
+            className="bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-5 text-sm"
+            role="alert"
+          >
+            <strong className="font-semibold">Error:</strong> {error}
+          </div>
+        )}
 
-      <form onSubmit={handleLogin} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-800 mb-1">Email Address</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-500 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-600"
-            required
+        <form onSubmit={handleLogin} className="space-y-5">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Email Address
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={loading}
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-green-600 transition"
+              placeholder="you@example.com"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Password
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              disabled={loading}
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-green-600 transition"
+              placeholder="••••••••"
+            />
+          </div>
+
+          <button
+            type="submit"
             disabled={loading}
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-800 mb-1">Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-500 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-600"
-            required
-            disabled={loading}
-          />
-        </div>
+            className={`w-full mt-4 py-3 font-semibold rounded-xl transition duration-200 text-white ${
+              loading
+                ? "bg-green-400 cursor-not-allowed"
+                : "bg-green-700 hover:bg-green-800 shadow-md hover:shadow-lg"
+            }`}
+          >
+            {loading ? "Logging In..." : "Log In"}
+          </button>
+        </form>
 
-        <button
-          type="submit"
-          className={`w-full mt-6 py-3 px-4 bg-green-700 text-white font-medium rounded-full hover:bg-green-800 transition duration-200 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-          disabled={loading}
-        >
-          {loading ? 'Logging In...' : 'Log In'}
-        </button>
-      </form>
+        <p className="text-center text-gray-500 text-sm mt-6">
+          Don’t have an account?{" "}
+          <a href="/register" className="text-green-700 font-medium hover:underline">
+            Register here
+          </a>
+        </p>
+      </div>
     </div>
   );
 }
